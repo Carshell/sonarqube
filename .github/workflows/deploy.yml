@@ -1,0 +1,36 @@
+name: Deploy Bot to Server
+
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+
+          script: |
+
+            cd ~/telegram-sonarqube/sonarqube
+            
+
+            git pull origin main
+            
+
+            docker build -t telegram-bot-image .
+            
+
+            docker stop running-bot || true
+            docker rm running-bot || true
+            
+
+            docker run -d --name running-bot --env-file .env telegram-bot-image
