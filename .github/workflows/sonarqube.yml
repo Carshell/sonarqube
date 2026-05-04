@@ -14,11 +14,15 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          # Disabling shallow clone is recommended for improving relevancy of reporting
           fetch-depth: 0
           
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v2
+        with:
+          # This tells the action to wait for the final Quality Gate result
+          # If the Quality Gate fails, the GitHub Action will fail (Red X)
+          args: >
+            -Dsonar.qualitygate.wait=true
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
