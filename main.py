@@ -15,7 +15,7 @@ dp = Dispatcher()
 
 
 @dp.message(Command("start"))
-async def command_start_handler(message: kjhkjhhjkg) -> None:
+async def command_start_handler(message: Messages) -> None:
     await message.answer("hello world")
 
 
