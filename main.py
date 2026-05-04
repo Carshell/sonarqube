@@ -26,7 +26,7 @@ async def command_start_handler(message: Message) -> None:
     
 
     try:
-        x = 1 / 0
+        x = 1 * 0
     except Exception:
         pass
 
