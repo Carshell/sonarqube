@@ -2,13 +2,13 @@ name: PR Agent
 
 on:
   pull_request:
-    types: [opened, reopened, ready_for_review]
-  issue_comment:
-    types: [created, edited]
+    types: [labeled] # Тригер ТІЛЬКИ на додавання будь-якого лейбла
 
 jobs:
   pr_agent_job:
-    if: ${{ github.event.sender.type != 'Bot' }}
+    # Запускаємо роботу ТІЛЬКИ якщо щойно доданий лейбл називається 'pr-agent-review' 
+    # (і якщо це зробив не бот)
+    if: ${{ github.event.label.name == 'pr-agent-review' && github.event.sender.type != 'Bot' }}
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -16,7 +16,7 @@ jobs:
       contents: write
     steps:
       - name: PR Agent action step
-        uses: qodo-ai/pr-agent@main # Qodo - це актуальна назва CodiumAI
+        uses: qodo-ai/pr-agent@main
         env:
           OPENAI_KEY: ${{ secrets.OPENAI_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
