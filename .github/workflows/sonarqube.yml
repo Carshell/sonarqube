@@ -2,12 +2,13 @@ name: SonarQube Analysis
 
 on:
   pull_request:
-    branches:
-      - main
+    types: [labeled] # Спрацьовує тільки при додаванні лейбла
 
 jobs:
   sonarqube:
     name: Code Scan
+    # Запускаємо роботу ТІЛЬКИ якщо доданий лейбл має точну назву 'sonarqube'
+    if: ${{ github.event.label.name == 'sonarqube' }}
     runs-on: ubuntu-latest
     
     steps:
